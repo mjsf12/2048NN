@@ -1,5 +1,5 @@
 import numpy as np
-
+from time import sleep
 class Game():
     def __init__(self, tmn):
         self.tmn = tmn
@@ -19,15 +19,24 @@ class Game():
                 break
 
     def Pontos(self):
-        self.pontos = 2**np.sum(self.tabuleiro)
+        self.pontos = np.sum(self.tabuleiro)
 
     def Print(self):
         print(self.tabuleiro)
         print(self.pontos)
 
     def Teclado(self):
-        t = input()
-        return t        
+        aux=np.random.randint(0,4)
+        if aux == 0 :
+            return 'c'
+        elif aux == 1:
+            return 'b'
+        elif aux == 2:
+            return 'e'
+        else :
+            return 'd'
+        # t = input()
+        # return t        
 
     def esqdit(self,tabu):
         novo_tabuleiro = []
@@ -114,6 +123,8 @@ class Game():
             self.Print()
             tecla = self.Teclado()
             self.Calcular_novo_tabuleiro(tecla)
+            self.Pontos()
+
         
 game = Game(4)
 game.LoopGame()
