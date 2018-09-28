@@ -128,11 +128,13 @@ class Game():
             self.Pontos()
 
 po = []
-for x in range(1000):
-    print ((x/1000)*100)
+def sunss(num):
+    return num[0]
+for x in range(100):
+    print ((x/100)*100)
     print ("%")
     game = Game(4)
     game.LoopGame()
-    po.append(game.pontos)
+    po.append([game.pontos,game.tabuleiro])
     print (game.pontos)
-print(max(po))
+print(max(po,key=sunss))
