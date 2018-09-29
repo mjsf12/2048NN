@@ -8,6 +8,7 @@ class Game():
     def CriarTabuleiro(self):
         self.tabuleiro = np.zeros((self.tmn,self.tmn))
         self.pontos = 0
+        self.rodadas = 0
         self.Colocar_Aleatrio()
 
     def Colocar_Aleatrio(self):
@@ -19,7 +20,7 @@ class Game():
                 break
 
     def Pontos(self):
-        self.pontos = np.sum(self.tabuleiro)
+        self.pontos = (np.sum(self.tabuleiro))*2 - self.rodadas*1/2
 
     def Print(self):
         print(self.tabuleiro)
@@ -123,6 +124,7 @@ class Game():
             self.Print()
             tecla = self.Teclado()
             self.Calcular_novo_tabuleiro(tecla)
+            self.rodadas += 1
             self.Pontos()
 
         
