@@ -1,9 +1,11 @@
 import numpy as np
 from time import sleep
+from Tensor import Rede_neural
 class Game():
     def __init__(self, tmn):
         self.tmn = tmn
         self.CriarTabuleiro()
+        self.RN = Rede_neural()
 
     def CriarTabuleiro(self):
         self.tabuleiro = np.zeros((self.tmn,self.tmn))
@@ -27,7 +29,7 @@ class Game():
         print(self.pontos)
 
     def Teclado(self):
-        aux=np.random.randint(0,4)
+        aux=self.RN.predict(self.tabuleiro)
         if aux == 0 :
             return 'c'
         elif aux == 1:
@@ -119,14 +121,22 @@ class Game():
         while True:
             if not 0 in self.tabuleiro or 11 in self.tabuleiro:
                 break
-            self.Print()
+            #self.Print()
             self.Colocar_Aleatrio()
-            self.Print()
+            #self.Print()
             tecla = self.Teclado()
             self.Calcular_novo_tabuleiro(tecla)
             self.rodadas += 1
             self.Pontos()
 
-        
-game = Game(4)
-game.LoopGame()
+po = []
+def sunss(num):
+    return num[0]
+for x in range(100):
+    print ((x/100)*100)
+    print ("%")
+    game = Game(4)
+    game.LoopGame()
+    po.append([game.pontos,game.tabuleiro])
+    print (game.pontos)
+print(max(po,key=sunss))
