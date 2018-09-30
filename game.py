@@ -1,11 +1,13 @@
 import numpy as np
 from time import sleep
 from Tensor import Rede_neural
+from BO import BO
+import os
 class Game():
-    def __init__(self, tmn):
+    def __init__(self, tmn,RN):
         self.tmn = tmn
         self.CriarTabuleiro()
-        self.RN = Rede_neural()
+        self.RN = RN
 
     def CriarTabuleiro(self):
         self.tabuleiro = np.zeros((self.tmn,self.tmn))
@@ -22,7 +24,7 @@ class Game():
                 break
 
     def Pontos(self):
-        self.pontos = (np.sum(self.tabuleiro))*2 - self.rodadas*1/2
+        self.pontos = (np.sum(self.tabuleiro))*4 - self.rodadas*1/2
 
     def Print(self):
         print(self.tabuleiro)
@@ -38,8 +40,7 @@ class Game():
             return 'e'
         else :
             return 'd'
-        # t = input()
-        # return t        
+       
 
     def esqdit(self,tabu):
         novo_tabuleiro = []
@@ -121,22 +122,30 @@ class Game():
         while True:
             if not 0 in self.tabuleiro or 11 in self.tabuleiro:
                 break
-            #self.Print()
             self.Colocar_Aleatrio()
-            #self.Print()
             tecla = self.Teclado()
             self.Calcular_novo_tabuleiro(tecla)
             self.rodadas += 1
-            self.Pontos()
+        self.Pontos()
 
 po = []
 def sunss(num):
-    return num[0]
-for x in range(100):
-    print ((x/100)*100)
-    print ("%")
-    game = Game(4)
-    game.LoopGame()
-    po.append([game.pontos,game.tabuleiro])
-    print (game.pontos)
-print(max(po,key=sunss))
+    return num[1]
+epocas = 100
+bo = BO()
+array = bo.Criar_inicio()
+for z in range(epocas):
+    y=0
+    for x in array:
+        y = y+ 1
+        print("epoca")
+        print(z)
+        print ("Porcentagem do array")
+        print ((y/110)*100)
+        game = Game(4,x[0])
+        game.LoopGame()
+        x[1] = game.pontos
+        os.system('clear')        
+    array = sorted(array,key=sunss,reverse=True)
+    array = bo.recalcular(array)
+

@@ -6,26 +6,32 @@ import numpy as np
 from time import sleep
 
 class Rede_neural(object):
-    def __init__(self):
+    def __init__(self,wids=None):
+        types=""
+        if wids == None:
+            types="he_uniform"
+        else:
+            types="zeros"
         self.model = Sequential()
-        self.model.add(Dense(32, input_dim=16,kernel_initializer='random_uniform',bias_initializer='random_uniform'))
+        self.model.add(Dense(32, input_dim=16,kernel_initializer=types,bias_initializer=types))
         self.model.add(Activation('hard_sigmoid'))
-        self.model.add(Dense(4,kernel_initializer='random_uniform',bias_initializer='random_uniform'))
+        self.model.add(Dense(4,kernel_initializer=types,bias_initializer=types))
         self.model.add(Activation('softmax'))
-        self.wid = self.model.get_weights()
-
+        if wids == None:
+            self.wids = self.model.get_weights()
+        else:
+            self.setWid(wids)
+        
     def getWid(self):
-        return self.wid
+        return self.wids
 
     def setWid(self,wid):
-        self.wid = wid
+        self.wids = wid
         self.model.set_weights(self.wid)
 
     def predict(self,X):
         X = np.matrix(X.flatten())
-        #print(X)
         Y= self.model.predict(X)
-        #print (Y.argmax())
         return (Y.argmax())
 
 # def mutacao(wid):
