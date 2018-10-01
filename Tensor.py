@@ -27,7 +27,7 @@ class Rede_neural(object):
 
     def setWid(self,wid):
         self.wids = wid
-        self.model.set_weights(self.wid)
+        self.model.set_weights(wid)
 
     def predict(self,X):
         X = np.matrix(X.flatten())

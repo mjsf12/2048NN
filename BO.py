@@ -25,12 +25,8 @@ class BO ():
     
     def pegar_meio(self, widP,widM):
         num = np.random.randint(len(widP))
-        if num == 0:
-            num= num + 1
-        elif num == len(widP):
-            num = num - 1
         if (not hasattr(widP[num], "__len__")):
-            return [widP[num]]
+            return np.concatenate((widP[:num],[widP[num]],widM[num+1:]))
         meio = self.pegar_meio(widP[num],widM[num])
         return widP[:num]+meio+widM[num+1:]
         
