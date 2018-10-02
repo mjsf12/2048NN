@@ -1,19 +1,20 @@
 from Tensor import Rede_neural
 import numpy as np
 import os
+from mxnetNN import Rede
 class BO ():
     def __init__(self):
         pass
     def mutacao(self,neural):
-        wid = neural.getWid()
+        wid = neural#.getWid()
         aux  = wid
         while (True):
             num = np.random.randint(len(aux))
-            if (not hasattr(aux[num], "__len__")):
-                aux[num] = np.random.uniform(-1,1)
+            if (len(aux[num]==1)):#not hasattr(aux[num], "__len__")):
+                aux[num][0] = np.random.uniform(-1,1)
                 break
             aux = aux[num]
-        neural.setWid(wid)
+        #neural.setWid(wid)
         return neural
 
     def filhos(self,pai,mae):
@@ -25,8 +26,8 @@ class BO ():
     
     def pegar_meio(self, widP,widM):
         num = np.random.randint(len(widP))
-        if (not hasattr(widP[num], "__len__")):
-            return np.concatenate((widP[:num],[widP[num]],widM[num+1:]))
+        if (len(widP[num]==1)):
+            return (widP[:num]+[widP[num]]+widM[num+1:])
         meio = self.pegar_meio(widP[num],widM[num])
         return widP[:num]+meio+widM[num+1:]
         
@@ -65,7 +66,7 @@ class BO ():
             z = z+1
             print("Criando Redes:")
             print((z/110)*100)
-            volta.append([Rede_neural(),0])
+            volta.append([Rede(),0])
             os.system('clear') 
         return volta    
 
