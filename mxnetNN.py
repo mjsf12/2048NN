@@ -47,7 +47,7 @@ class Rede(gluon.Block):
         super(Rede,self).__init__(**kwargs)
         with self.name_scope():
             self.dense1=mydence(32,use_bias=True,weight_initializer=uniform_de_verdade(),bias_initializer=uniform_de_verdade(),in_units=16)
-            self.dense2=mydence(4,use_bias=True,weight_initializer=uniform_de_verdade(),bias_initializer=uniform_de_verdade())
+            self.dense2=mydence(4,use_bias=True,weight_initializer=uniform_de_verdade(),bias_initializer=uniform_de_verdade(),in_units=32)
         self.data_ctx = mx.cpu()
         self.model_ctx = mx.cpu()
         self.collect_params().initialize(mx.init.Normal(sigma=.01), ctx=self.model_ctx)
@@ -61,7 +61,7 @@ class Rede(gluon.Block):
         x=self.dense2(x)
         #print(x)
         x=nd.softmax(x)
-        print(x)
+        #print(x)
         return x
 
     def get_wids(self):
@@ -81,6 +81,7 @@ class Rede(gluon.Block):
     def predict(self,x):
         x = nd.array(x)
         x=x.reshape((1,16))
+        x= x/11
         Y = self(x.as_in_context(self.model_ctx))
         return (Y.argmax(axis=1))
 
