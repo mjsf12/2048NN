@@ -2,6 +2,7 @@ from Tensor import Rede_neural
 import numpy as np
 import os
 from mxnetNN import Rede
+from mxnet import nd
 class BO ():
     def __init__(self):
         pass
@@ -31,7 +32,7 @@ class BO ():
         return filho
     
     def pegar_meio(self, widP,widM):
-        num = np.random.randint(len(widP)) -1
+        num = np.random.randint(len(widP))
         print(num)
         shape = 0
         try:
@@ -39,9 +40,15 @@ class BO ():
         except:
             pass
         if (shape==(1,)):
-            return (np.concatenate((widP[:num],widP[num],widM[num+1:])))
+            aux =np.append(widP[:num].asnumpy(),widP[num].asnumpy())
+            aux = np.append(aux,widM[num+1:].asnumpy())
+            aux = nd.array(aux)
+            return aux
         meio = self.pegar_meio(widP[num],widM[num])
-        return np.concatenate((widP[:num],meio,widM[num+1:]))
+        aux =np.append(widP[:num].asnumpy(),meio.asnumpy())
+        aux = np.append(aux,widM[num+1:].asnumpy())
+        aux = nd.array(aux)
+        return aux
         
     def Suruba(self,melhores):
         filhos = []
