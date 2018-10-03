@@ -32,7 +32,7 @@ class BO ():
         return filho
     
     def pegar_meio(self, widP,widM):
-        num = np.random.randint(len(widP))
+        num = np.random.randint(1,len(widP)+1)-1
         print(num)
         shape = 0
         try:
@@ -45,9 +45,14 @@ class BO ():
             aux = nd.array(aux)
             return aux
         meio = self.pegar_meio(widP[num],widM[num])
-        aux =np.append(widP[:num].asnumpy(),meio.asnumpy())
-        aux = np.append(aux,widM[num+1:].asnumpy())
-        aux = nd.array(aux)
+        try:
+            aux =np.append(widP[:num].asnumpy(),meio.asnumpy())
+            aux = np.append(aux,widM[num+1:].asnumpy())
+            aux = nd.array(aux)
+        except:
+           aux =  [meio] +widM[num+1:]
+           aux =  widP[:num] +  aux
+
         return aux
         
     def Suruba(self,melhores):
