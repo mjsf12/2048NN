@@ -28,30 +28,42 @@ class BO ():
         widM = mae.get_genes()
         widF= self.pegar_meio(widP,widM)
         filho = Rede()
-        filho.set_genes(widF)
+        filho.set_genes(widF[0])
         return filho
     
     def pegar_meio(self, widP,widM):
-        num = np.random.randint(1,len(widP)+1)-1
-        print(num)
+        num = np.random.randint(1,len(widP)+1) -1
+        print (num)
         shape = 0
         try:
             shape = widP[num].shape
         except:
             pass
         if (shape==(1,)):
+            aux = None
             aux =np.append(widP[:num].asnumpy(),widP[num].asnumpy())
-            aux = np.append(aux,widM[num+1:].asnumpy())
-            aux = nd.array(aux)
+            try:
+                aux = np.append(aux,widM[num+1:].asnumpy())
+            except:
+                pass
+            aux = nd.array([aux])
             return aux
         meio = self.pegar_meio(widP[num],widM[num])
+        aux = None
         try:
             aux =np.append(widP[:num].asnumpy(),meio.asnumpy())
-            aux = np.append(aux,widM[num+1:].asnumpy())
-            aux = nd.array(aux)
+            try:
+                aux = np.append(aux,widM[num+1:].asnumpy())
+            except:
+                pass            
+            aux = nd.array([aux])
         except:
-           aux =  [meio] +widM[num+1:]
-           aux =  widP[:num] +  aux
+            try:
+                aux =  [meio] +widM[num+1:]
+            except:
+                aux = [meio]
+            aux =  widP[:num] +  aux
+            aux = [aux]
 
         return aux
         
