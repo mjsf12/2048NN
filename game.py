@@ -24,7 +24,7 @@ class Game():
                 break
 
     def Pontos(self):
-        self.pontos = (np.sum(self.tabuleiro))*4 - self.rodadas*1/2
+        self.pontos = (np.sum(self.tabuleiro))*4
 
     def Print(self):
         print(self.tabuleiro)
@@ -135,6 +135,7 @@ epocas = 100
 bo = BO()
 array = bo.Criar_inicio()
 melhor=0
+tabu=[]
 for z in range(epocas):
     y=0
     for x in array:
@@ -145,11 +146,15 @@ for z in range(epocas):
         print ((y/110)*100)
         print ("Melhor Resultado")
         print (melhor)
+        print ("Tabuleiro")
+        print (tabu)
         game = Game(4,x[0])
         game.LoopGame()
         x[1] = game.pontos
+        x.append(game.tabuleiro)
         os.system('clear')        
     array = sorted(array,key=sunss,reverse=True)
     melhor=array[0][1]
+    tabu =array[0][2]
     array = bo.recalcular(array)
 

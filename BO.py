@@ -40,7 +40,6 @@ class BO ():
             pass
         if (shape==(1,)):
             aux = None           
-            print(widP[num])
             aux =np.append(widP[:num].asnumpy(),widP[num].asnumpy())
             try:
                 aux = np.append(aux,widM[num+1:].asnumpy())
@@ -50,9 +49,6 @@ class BO ():
             aux = nd.array(aux)
             return aux
         meio = self.pegar_meio(widP[num],widM[num])
-        # print (widP)
-        # print (meio)
-        # print (widM) 
         aux = None
         try:
             aux =np.append(widP[:num].asnumpy(),meio.asnumpy())

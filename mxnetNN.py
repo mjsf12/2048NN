@@ -3,6 +3,7 @@ import numpy as np
 import mxnet as mx
 from mxnet import nd, autograd, gluon
 from random import SystemRandom
+from time import sleep
 
 
 class uniform_de_verdade(mx.initializer.Initializer):
@@ -46,22 +47,17 @@ class Rede(gluon.Block):
     def __init__(self,**kwargs):
         super(Rede,self).__init__(**kwargs)
         with self.name_scope():
-            self.dense1=mydence(32,use_bias=True,weight_initializer=uniform_de_verdade(),bias_initializer=uniform_de_verdade(),in_units=16)
-            self.dense2=mydence(4,use_bias=True,weight_initializer=uniform_de_verdade(),bias_initializer=uniform_de_verdade(),in_units=32)
+            self.dense1=mydence(8,use_bias=True,weight_initializer=uniform_de_verdade(),bias_initializer=uniform_de_verdade(),in_units=16)
+            self.dense2=mydence(4,use_bias=True,weight_initializer=uniform_de_verdade(),bias_initializer=uniform_de_verdade(),in_units=8)
         self.data_ctx = mx.cpu()
         self.model_ctx = mx.cpu()
         self.collect_params().initialize(mx.init.Normal(sigma=.01), ctx=self.model_ctx)
 
     def forward(self,x):
-        #print(x)
         x=self.dense1(x)
-        #print(x)
-        x=nd.sigmoid(x)
-        #print(x)
+        x=nd.relu(x)
         x=self.dense2(x)
-        #print(x)
         x=nd.softmax(x)
-        #print(x)
         return x
 
     def get_wids(self):
