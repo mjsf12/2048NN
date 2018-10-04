@@ -134,6 +134,7 @@ def sunss(num):
 epocas = 100
 bo = BO()
 array = bo.Criar_inicio()
+melhor=0
 for z in range(epocas):
     y=0
     for x in array:
@@ -142,10 +143,13 @@ for z in range(epocas):
         print(z)
         print ("Porcentagem do array")
         print ((y/110)*100)
+        print ("Melhor Resultado")
+        print (melhor)
         game = Game(4,x[0])
         game.LoopGame()
         x[1] = game.pontos
         os.system('clear')        
     array = sorted(array,key=sunss,reverse=True)
+    melhor=array[0][1]
     array = bo.recalcular(array)
 

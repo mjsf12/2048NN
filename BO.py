@@ -28,43 +28,47 @@ class BO ():
         widM = mae.get_genes()
         widF= self.pegar_meio(widP,widM)
         filho = Rede()
-        filho.set_genes(widF[0])
+        filho.set_genes(widF)
         return filho
     
     def pegar_meio(self, widP,widM):
         num = np.random.randint(1,len(widP)+1) -1
-        print (num)
         shape = 0
         try:
             shape = widP[num].shape
         except:
             pass
         if (shape==(1,)):
-            aux = None
+            aux = None           
+            print(widP[num])
             aux =np.append(widP[:num].asnumpy(),widP[num].asnumpy())
             try:
                 aux = np.append(aux,widM[num+1:].asnumpy())
             except:
                 pass
-            aux = nd.array([aux])
+            aux.reshape(widP.shape)         
+            aux = nd.array(aux)
             return aux
         meio = self.pegar_meio(widP[num],widM[num])
+        # print (widP)
+        # print (meio)
+        # print (widM) 
         aux = None
         try:
             aux =np.append(widP[:num].asnumpy(),meio.asnumpy())
             try:
                 aux = np.append(aux,widM[num+1:].asnumpy())
             except:
-                pass            
-            aux = nd.array([aux])
+                pass
+            aux=aux.reshape(widP.shape)
+            aux = nd.array(aux)
+
         except:
             try:
                 aux =  [meio] +widM[num+1:]
             except:
                 aux = [meio]
             aux =  widP[:num] +  aux
-            aux = [aux]
-
         return aux
         
     def Suruba(self,melhores):
