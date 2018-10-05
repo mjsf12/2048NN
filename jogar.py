@@ -28,7 +28,6 @@ class Game():
 
     def Print(self):
         print(self.tabuleiro)
-        print(self.pontos)
 
     def Teclado(self):
         aux=self.RN.predict(self.tabuleiro)
@@ -120,57 +119,19 @@ class Game():
 
     def LoopGame(self,i):
         while True:
+            os.system('clear')    
             if not 0 in self.tabuleiro or 11 in self.tabuleiro:
                 break
             self.Colocar_Aleatrio()
+            self.Print()
             tecla = self.Teclado()
+            print(tecla)
             self.Calcular_novo_tabuleiro(tecla)
             self.rodadas += 1
             sleep(i)
         self.Pontos()
 
-po = []
-def sunss(num):
-    return num[1]
-epocas = 100
 bo = BO()
-array = bo.Criar_inicio()
-melhor=0
-tabu=[]
-Elite = [0,0,0]
-z=0
-while True:
-    if z ==51:
-        break
-    y=0
-    z = z+1
-    for x in array:
-        y = y+ 1
-        print("epoca")
-        print(z)
-        print ("Porcentagem do array")
-        print ((y/110)*100)
-        print ("Rodada anterior")
-        print ("Melhor Resultado")
-        print (melhor)
-        print ("Tabuleiro")
-        print (tabu)
-        print ("ELITE")
-        print ("Melhor Resultado")
-        print (Elite[1])
-        print ("Tabuleiro")
-        print (Elite[2])
-        game = Game(4,x[0])
-        game.LoopGame(0)
-        x[1] = game.pontos
-        x.append(game.tabuleiro)
-        os.system('clear')        
-    array = sorted(array,key=sunss,reverse=True)
-    melhor = array[0][1]
-    tabu =array[0][2]
-    if Elite[1]<melhor:
-        Elite=array[0]
-        bo.salvar(Elite[0],z) 
-
-    array = bo.recalcular(array)
-
+nn=bo.load("Elite-epoca-13")
+game = Game(4,nn)
+game.LoopGame(0.5)

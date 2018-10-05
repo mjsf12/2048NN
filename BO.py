@@ -85,7 +85,42 @@ class BO ():
                 os.system('clear')     
         return melhores+filhos
 
+
+    def Suruba_Votação( self,array):
+        filhos = []
+        for x in range(len(array)):
+            if x == 0:
+                continue
+            else:
+                array[x][1] = array[x-1][1] + array[x][1]
+        for _ in range(100):
+            pai = np.random.randint(array[-1][1])
+            mae = np.random.randint(array[-1][1])
+            pmae = False
+            ppai = False
+            for x in range(len(array)):
+                if ppai and pmae:
+                    break
+                if not pmae:
+                    if(array[x][1]>=mae):
+                        mae = array[x-1]
+                        pmae = True
+                if not ppai: 
+                    if(array[x][1]>=pai):
+                        pai = array[x-1]
+                        ppai = True
+            fii = self.filhos(pai[0],mae[0])
+            if (np.random.rand() <= 0.02):
+                fii = self.mutacao(fii)
+            filhos.append([fii,0])
+        return(filhos)
+        
+
     def recalcular(self,todos):
+        return self.Suruba_Votação(todos)
+    
+    
+    def recalcular_old(self,todos):
         antigos=[]
         for x in todos[:10]:
             antigos.append([x[0],0])
@@ -94,7 +129,16 @@ class BO ():
         for _ in range(10):
             novos.append([Rede(),0])
         return antigos+novos
-    
+
+    def salvar(self, elite, epoca):
+        elite.save_parameters("elites/Elite-epoca-"+str(epoca))
+        
+    def load(self,name):
+        re  = Rede()
+        re.load_parameters("elites/"+name)
+        return re
+
+
     def Criar_inicio(self):
         volta = []
         z=0
