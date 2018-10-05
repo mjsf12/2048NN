@@ -24,7 +24,7 @@ class Game():
                 break
 
     def Pontos(self):
-        self.pontos = (np.sum(self.tabuleiro) + np.amax(self.tabuleiro)*10)
+        self.pontos = (np.sum(self.tabuleiro))
 
     def Print(self):
         print(self.tabuleiro)
