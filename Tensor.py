@@ -9,11 +9,11 @@ class Rede_neural(object):
     def __init__(self,wids=None):
         types=""
         if wids == None:
-            types="he_uniform"
+            types="m"
         else:
             types="zeros"
         self.model = Sequential()
-        self.model.add(Dense(32, input_dim=16,kernel_initializer=types,bias_initializer=types))
+        self.model.add(Dense(64, input_dim=16,kernel_initializer=types,bias_initializer=types))
         self.model.add(Activation('hard_sigmoid'))
         self.model.add(Dense(4,kernel_initializer=types,bias_initializer=types))
         self.model.add(Activation('softmax'))
