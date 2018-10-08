@@ -47,48 +47,74 @@ class Rede(gluon.Block):
     def __init__(self,**kwargs):
         super(Rede,self).__init__(**kwargs)
         with self.name_scope():
-            self.dense1=mydence(64,use_bias=True,weight_initializer=uniform_de_verdade(),bias_initializer=uniform_de_verdade(),in_units=16)
-            self.dense2=mydence(4,use_bias=True,weight_initializer=uniform_de_verdade(),bias_initializer=uniform_de_verdade(),in_units=64)
+            self.dense1=mydence(4,use_bias=True,weight_initializer=uniform_de_verdade(),bias_initializer=uniform_de_verdade(),in_units=2)
+            #self.dense2=mydence(4,use_bias=True,weight_initializer=uniform_de_verdade(),bias_initializer=uniform_de_verdade(),in_units=4)
         self.data_ctx = mx.cpu()
         self.model_ctx = mx.cpu()
         self.collect_params().initialize(mx.init.Normal(sigma=.01), ctx=self.model_ctx)
 
     def forward(self,x):
         x=self.dense1(x)
-        x=nd.relu(x)
-        x=self.dense2(x)
+        #x=nd.relu(x)
+        #x=self.dense2(x)
         x=nd.softmax(x)
         return x
 
     def get_wids(self):
-        return self.dense1.get_wid(),self.dense2.get_wid()
+        return self.dense1.get_wid()#self.dense2.get_wid()
 
     def get_bias(self):
-        return self.dense1.get_bias(),self.dense2.get_bias()
+        return self.dense1.get_bias()#self.dense2.get_bias()
     
     def set_bias(self,bias1,bias2):
         self.dense1.set_bias(bias1)
-        self.dense2.set_bias(bias2)
+        #self.dense2.set_bias(bias2)
 
     def set_wid(self,weight1,weight2):
         self.dense1.set_wid(weight1)
-        self.dense2.set_wid(weight2)
+       # self.dense2.set_wid(weight2)
 
     def predict(self,x):
         x = nd.array(x)
-        x=x.reshape((1,16))
-        x= x/nd.max(x)
+        pri= 0
+        sec = 0
+        aux = 99999
+        for y in x:
+            aux = 99999
+            for z in y:
+                if z == 0:
+                    continue
+                if aux == z:
+                    pri = pri + aux.asscalar()
+                aux = z        
+        x = nd.transpose(x)
+        aux = 99999
+        for y in x:
+            aux = 99999
+            for z in y:
+                if z == 0:
+                    continue
+                if aux == z:
+                    sec = sec + aux.asscalar()
+                aux = z
+        x= nd.array([pri,sec])
+        x =x.reshape((1,2))
+        if not nd.max(x) == 0:
+            x= x/nd.max(x)
         Y = self(x.as_in_context(self.model_ctx))
         return (Y.argmax(axis=1))
 
     def get_genes(self):
-        w1,w2 = self.get_wids()
-        b1,b2 = self.get_bias()
-        return [w1,b1,w2,b2]
+        #w1,
+        w2 = self.get_wids()
+        #b1,
+        b2 = self.get_bias()
+        #w1,b1
+        return [w2,b2]
 
     def set_genes(self,gene):
-        self.set_wid(gene[0],gene[2])
-        self.set_bias(gene[1],gene[3])
+        self.set_wid(gene[0],0)#,gene[2])
+        self.set_bias(gene[1],0)#,gene[3])
 
         
         

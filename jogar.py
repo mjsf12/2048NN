@@ -24,7 +24,7 @@ class Game():
                 break
 
     def Pontos(self):
-        self.pontos = (np.sum(self.tabuleiro))
+        self.pontos = (np.sum(self.tabuleiro)+ np.max(self.tabuleiro)*4)
 
     def Print(self):
         print(self.tabuleiro)
@@ -128,10 +128,12 @@ class Game():
             print(tecla)
             self.Calcular_novo_tabuleiro(tecla)
             self.rodadas += 1
+            self.Print()
+            input()
             sleep(i)
         self.Pontos()
 
 bo = BO()
-nn=bo.load("Elite-epoca-12")
+nn=bo.load("Elite-epoca-20")
 game = Game(4,nn)
-game.LoopGame(0.5)
+game.LoopGame(0)
