@@ -134,6 +134,6 @@ class Game():
         self.Pontos()
 
 bo = BO()
-nn=bo.load("Elite-epoca-20")
+nn=bo.load("Elite-epoca-14")
 game = Game(4,nn)
 game.LoopGame(0)

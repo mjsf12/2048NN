@@ -132,6 +132,9 @@ class Game():
 po = []
 def sunss(num):
     return num[1]
+
+def media (valor):
+    pass
 epocas = 100
 bo = BO()
 array = bo.Criar_inicio()

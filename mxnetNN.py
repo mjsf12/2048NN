@@ -47,11 +47,12 @@ class Rede(gluon.Block):
     def __init__(self,**kwargs):
         super(Rede,self).__init__(**kwargs)
         with self.name_scope():
-            self.dense1=mydence(4,use_bias=True,weight_initializer=uniform_de_verdade(),bias_initializer=uniform_de_verdade(),in_units=2)
+            self.dense1=mydence(4,use_bias=True,weight_initializer=uniform_de_verdade(),bias_initializer=uniform_de_verdade(),in_units=3)
             #self.dense2=mydence(4,use_bias=True,weight_initializer=uniform_de_verdade(),bias_initializer=uniform_de_verdade(),in_units=4)
         self.data_ctx = mx.cpu()
         self.model_ctx = mx.cpu()
         self.collect_params().initialize(mx.init.Normal(sigma=.01), ctx=self.model_ctx)
+        self.anterior = nd.array([0])
 
     def forward(self,x):
         x=self.dense1(x)
@@ -97,12 +98,14 @@ class Rede(gluon.Block):
                 if aux == z:
                     sec = sec + aux.asscalar()
                 aux = z
-        x= nd.array([pri,sec])
-        x =x.reshape((1,2))
+        x= nd.array([pri,sec,self.anterior.asscalar()])
+        x =x.reshape((1,3))
         if not nd.max(x) == 0:
             x= x/nd.max(x)
         Y = self(x.as_in_context(self.model_ctx))
-        return (Y.argmax(axis=1))
+        Y = Y.argmax(axis=1)
+        self.anterior = Y/3
+        return Y
 
     def get_genes(self):
         #w1,
