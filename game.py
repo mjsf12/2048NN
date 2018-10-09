@@ -133,8 +133,12 @@ po = []
 def sunss(num):
     return num[1]
 
-def media (valor):
-    pass
+def me (array):
+    todos = 0
+    for x in array:
+        aux=sunss(x)
+        todos = aux + todos
+    return todos/len(array)
 epocas = 100
 bo = BO()
 array = bo.Criar_inicio()
@@ -142,6 +146,7 @@ melhor=0
 tabu=[]
 Elite = [0,0,0]
 z=0
+meme = 0
 while True:
     if z ==51:
         break
@@ -163,6 +168,8 @@ while True:
         print (Elite[1])
         print ("Tabuleiro")
         print (Elite[2])
+        print ("media anterior")
+        print (meme)
         game = Game(4,x[0])
         game.LoopGame(0)
         x[1] = game.pontos
@@ -171,9 +178,10 @@ while True:
     array = sorted(array,key=sunss,reverse=True)
     melhor = array[0][1]
     tabu =array[0][2]
-    if Elite[1]<melhor:
+    meme = me(array) 
+    if Elite[1] < melhor:
         Elite=array[0]
-        bo.salvar(Elite[0],z) 
-
+        bo.salvar(Elite[0],z)
     array = bo.recalcular(array)
+    array.append([Elite[0],0])
 
