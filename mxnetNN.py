@@ -98,11 +98,11 @@ class Rede(gluon.Block):
                     sec = sec + aux.asscalar()
                 aux = z
         x= np.array([pri,sec])
+        if not np.max(x) == 0:
+            x= x/np.max(x)
         x= np.concatenate((x,self.anterior))
         x = nd.array(x)
         x =x.reshape((1,6))
-        if not nd.max(x) == 0:
-            x= x/nd.max(x)
         Y = self(x.as_in_context(self.model_ctx))
         Y = Y.argmax(axis=1)
         saida=np.zeros(4)

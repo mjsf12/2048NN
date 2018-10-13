@@ -1,4 +1,4 @@
 from BO import BO
 bo = BO()
-nn=bo.load("Elite-epoca-23")
+nn=bo.load("Elite-epoca-46")
 print(nn.get_genes())
