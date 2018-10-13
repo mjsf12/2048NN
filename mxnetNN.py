@@ -47,12 +47,12 @@ class Rede(gluon.Block):
     def __init__(self,**kwargs):
         super(Rede,self).__init__(**kwargs)
         with self.name_scope():
-            self.dense1=mydence(4,use_bias=True,weight_initializer=uniform_de_verdade(),bias_initializer=uniform_de_verdade(),in_units=3)
+            self.dense1=mydence(4,use_bias=True,weight_initializer=uniform_de_verdade(),bias_initializer=uniform_de_verdade(),in_units=6)
             #self.dense2=mydence(4,use_bias=True,weight_initializer=uniform_de_verdade(),bias_initializer=uniform_de_verdade(),in_units=4)
         self.data_ctx = mx.cpu()
         self.model_ctx = mx.cpu()
         self.collect_params().initialize(mx.init.Normal(sigma=.01), ctx=self.model_ctx)
-        self.anterior = nd.array([0])
+        self.anterior = np.zeros(4)
 
     def forward(self,x):
         x=self.dense1(x)
@@ -80,31 +80,34 @@ class Rede(gluon.Block):
         pri= 0
         sec = 0
         aux = 99999
-        for y in x:
+        for num in range(4):
+            arr=x[:,num]
+            arr2=x[num]
             aux = 99999
-            for z in y:
+            for z in arr:
                 if z == 0:
                     continue
                 if aux == z:
                     pri = pri + aux.asscalar()
                 aux = z        
-        x = nd.transpose(x)
-        aux = 99999
-        for y in x:
             aux = 99999
-            for z in y:
+            for z in arr2:
                 if z == 0:
                     continue
                 if aux == z:
                     sec = sec + aux.asscalar()
                 aux = z
-        x= nd.array([pri,sec,self.anterior.asscalar()])
-        x =x.reshape((1,3))
+        x= np.array([pri,sec])
+        x= np.concatenate((x,self.anterior))
+        x = nd.array(x)
+        x =x.reshape((1,6))
         if not nd.max(x) == 0:
             x= x/nd.max(x)
         Y = self(x.as_in_context(self.model_ctx))
         Y = Y.argmax(axis=1)
-        self.anterior = Y/3
+        saida=np.zeros(4)
+        saida[int(Y.asscalar())]= 1
+        self.anterior = saida
         return Y
 
     def get_genes(self):

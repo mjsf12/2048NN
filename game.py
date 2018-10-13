@@ -1,6 +1,5 @@
 import numpy as np
 from time import sleep
-from Tensor import Rede_neural
 from BO import BO
 import os
 class Game():
@@ -148,8 +147,6 @@ Elite = [0,0,0]
 z=0
 meme = 0
 while True:
-    if z ==51:
-        break
     y=0
     z = z+1
     for x in array:
@@ -179,9 +176,8 @@ while True:
     melhor = array[0][1]
     tabu =array[0][2]
     meme = me(array) 
-    if Elite[1] < melhor:
-        Elite=array[0]
-        bo.salvar(Elite[0],z)
+    Elite=array[0]
+    bo.salvar(Elite[0],z)
     array = bo.recalcular(array)
     array.append([Elite[0],0])
 

@@ -1,4 +1,3 @@
-from Tensor import Rede_neural
 import numpy as np
 import os
 from mxnetNN import Rede

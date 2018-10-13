@@ -1,6 +1,5 @@
 import numpy as np
 from time import sleep
-from Tensor import Rede_neural
 from BO import BO
 import os
 class Game():
@@ -134,6 +133,6 @@ class Game():
         self.Pontos()
 
 bo = BO()
-nn=bo.load("Elite-epoca-14")
+nn=bo.load("Elite-epoca-23")
 game = Game(4,nn)
 game.LoopGame(0)
